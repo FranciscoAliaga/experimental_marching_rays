@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://def82g8kbsfss"]
+
+[ext_resource type="Shader" path="res://rendering/render_base.gdshader" id="1_0p20y"]
+[ext_resource type="Script" path="res://rendering/render_base.gd" id="1_hru63"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ubdbl"]
+resource_local_to_scene = true
+shader = ExtResource("1_0p20y")
+shader_parameter/camera_pos = Vector3(-0.121, 2.102, -9.309)
+shader_parameter/camera_rotation = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/x_pixels = 1000
+shader_parameter/y_pixels = 500
+shader_parameter/max_reflection = 0.506
+shader_parameter/floor_color = Color(0.772549, 0.658824, 0.960784, 1)
+shader_parameter/sky_color = Color(0.501961, 1, 0.792157, 1)
+shader_parameter/fog_color = Color(0.831373, 0.909804, 1, 1)
+shader_parameter/foggyness = 0.948
+shader_parameter/fog_decay = 37.771
+
+[sub_resource type="Gradient" id="Gradient_5dcbp"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_u2gi6"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kgyyb"]
+width = 256
+height = 256
+generate_mipmaps = false
+normalize = false
+color_ramp = SubResource("Gradient_5dcbp")
+noise = SubResource("FastNoiseLite_u2gi6")
+
+[node name="RayMarcher" type="Node2D"]
+script = ExtResource("1_hru63")
+
+[node name="Texture" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_ubdbl")
+texture = SubResource("NoiseTexture2D_kgyyb")
+centered = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(3.906, 3.906)

@@ -1,0 +1,3 @@
+res://rendering/render_base.tscn
+res://rendering/new_shader.gdshaderinc
+res://rendering/render_base.gdshader
