@@ -6,9 +6,12 @@ shader_type canvas_item;
 // y vertical
 // z forward
 
+/* parameters pulled from godot scene */
 uniform vec3 camera_pos;
 uniform mat3 camera_rotation;
 
+
+/* parameters pulled from texture material */
 uniform int x_pixels;
 uniform int y_pixels;
 
@@ -20,17 +23,22 @@ uniform vec4 fog_color : source_color;
 uniform float foggyness : hint_range(0.,1.);
 uniform float fog_decay : hint_range(1.,100.);
 
+// constants //
+
+// for calculating derivatives
 const float dh   = 0.01;
 const float idh  = 1./dh;
 
+// to assess if ray stopped near or far objects.
 const float near = 0.01;
 const float far  = 100.;
 
-#define RAY_BOUNCES 3
-#define JUMP_SEARCH 3
-#define JUMP_MULT 20.
+// algorithm parameters. Tweak these!
+#define RAY_BOUNCES 3 // more -> more reflections. Needs to be at least 1. Less is faster.
+#define JUMP_SEARCH 3 // bounce performance is improved with more. Less is faster.
+#define JUMP_MULT 20. // bounce performance is improved if less (but step up jump search)
 
-#define MAX_STEPS 50
+#define MAX_STEPS 50 // Maximum ray marching steps for each ray. less is faster, and near 10 it's quite aesthetical
 
 // takes an uv coordinate from the screen renderer and
 // returns the normalized ray.
@@ -163,7 +171,7 @@ color_and_depth ray_marching(vec3 pos, vec3 ray, float t){
 	return result;
 }
 
-// shader code. the outgoing camera rays are calculating using camera uniforms (position and rotation)
+// Shader code. The outgoing camera rays are calculating using camera uniforms (position and rotation)
 void fragment() {
 	// camera position
 	vec3 ro = camera_pos;

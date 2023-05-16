@@ -1,11 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://def82g8kbsfss"]
+[gd_scene load_steps=7 format=3 uid="uid://n10sa2ujh1tl"]
 
-[ext_resource type="Shader" path="res://rendering/render_base.gdshader" id="1_0p20y"]
-[ext_resource type="Script" path="res://rendering/render_base.gd" id="1_hru63"]
+[ext_resource type="Script" path="res://rendering_scene.gd" id="1_dq2g6"]
+[ext_resource type="Shader" path="res://rendering/ray_marcher.gdshader" id="2_fdpd3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ubdbl"]
 resource_local_to_scene = true
-shader = ExtResource("1_0p20y")
+shader = ExtResource("2_fdpd3")
 shader_parameter/camera_pos = Vector3(-2, 2, -9)
 shader_parameter/camera_rotation = Basis(1, 0, 0.1, 0, 1, -0.1, -0.1, -0.1, 1)
 shader_parameter/x_pixels = 160
@@ -14,7 +14,7 @@ shader_parameter/max_reflection = 0.155
 shader_parameter/floor_color = Color(0, 0, 0, 1)
 shader_parameter/sky_color = Color(1, 1, 1, 1)
 shader_parameter/fog_color = Color(0.470588, 0.470588, 0.470588, 1)
-shader_parameter/foggyness = 0.823
+shader_parameter/foggyness = 0.732
 shader_parameter/fog_decay = 24.913
 
 [sub_resource type="Gradient" id="Gradient_5dcbp"]
@@ -30,13 +30,13 @@ color_ramp = SubResource("Gradient_5dcbp")
 noise = SubResource("FastNoiseLite_u2gi6")
 
 [node name="RayMarcher" type="Node2D"]
-script = ExtResource("1_hru63")
+script = ExtResource("1_dq2g6")
 
-[node name="Texture" type="Sprite2D" parent="."]
+[node name="LOOK_MY_MATERIAL" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_ubdbl")
 texture = SubResource("NoiseTexture2D_kgyyb")
 centered = false
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="DONT_MIND_ME" type="Camera2D" parent="."]
 anchor_mode = 0
 zoom = Vector2(3.906, 3.906)
