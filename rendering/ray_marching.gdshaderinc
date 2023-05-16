@@ -18,10 +18,7 @@ float exp_smin( float a, float b, float k )
 
 // thanks to inigo quilez implementation
 float smin(float a,float b){
-	if (abs(a-b)<0.1){
-		return min(a,b);
-	}
-	return exp_smin(a,b,2.);
+	return exp_smin(a,b,10.);
 }
 
 
@@ -45,6 +42,8 @@ struct ray_march_hit {
 	vec3 position;
 	vec4 color;
 	float depth;
+	float sdf;
+	bool max_iterations;
 };
 
 struct color_and_depth {
