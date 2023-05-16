@@ -2,3 +2,4 @@ res://rendering/rendering_scene.tscn
 res://rendering_scene.tscn
 res://rendering/ray_marching.gdshaderinc
 res://rendering/ray_marcher.gdshader
+res://rendering_scene.gd

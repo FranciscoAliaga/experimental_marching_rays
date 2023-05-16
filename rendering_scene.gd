@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var shader_material : ShaderMaterial = $Texture.material
+@onready var shader_material : ShaderMaterial = $LOOK_MY_MATERIAL.material
 
 func set_camera_pos(pos : Vector3):
 	shader_material.set_shader_parameter("camera_pos",pos)
