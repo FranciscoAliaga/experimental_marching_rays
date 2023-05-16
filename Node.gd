@@ -26,6 +26,7 @@ func _process(delta: float) -> void:
 	var position : Vector3 = T.origin
 	ray_marcher.set_camera_pos(position)
 
+var scale : float = 1.
 func _input(event):
 	if event is InputEventMouseMotion:
 		# there is mouse motion
@@ -35,9 +36,20 @@ func _input(event):
 		euler.x += relative_rotation.y
 		euler.y += relative_rotation.x
 		T.basis = Basis.from_euler(euler,EULER_ORDER_YXZ)
+		ray_marcher.set_camera_angle(T,scale)
+	
+	if event is InputEventMouseButton:
+		var wheel_dir : float = 0.
+		if event.button_index==MOUSE_BUTTON_WHEEL_DOWN:
+			wheel_dir -=1
+		if event.button_index==MOUSE_BUTTON_WHEEL_UP:
+			wheel_dir +=1
 		
-		ray_marcher.set_camera_angle(T)
-
+		scale *= pow(1.1,wheel_dir)
+		ray_marcher.set_camera_angle(T,scale)
+	
 	if event is InputEventKey:
 		if event.keycode == KEY_ESCAPE:
 			get_tree().quit()
+		if event.keycode == KEY_R:
+			get_tree().change_scene_to_file("res://main.tscn")
