@@ -6,16 +6,16 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ubdbl"]
 resource_local_to_scene = true
 shader = ExtResource("1_0p20y")
-shader_parameter/camera_pos = Vector3(-0.121, 2.102, -9.309)
-shader_parameter/camera_rotation = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
-shader_parameter/x_pixels = 1000
-shader_parameter/y_pixels = 500
-shader_parameter/max_reflection = 0.506
-shader_parameter/floor_color = Color(0.772549, 0.658824, 0.960784, 1)
-shader_parameter/sky_color = Color(0.501961, 1, 0.792157, 1)
-shader_parameter/fog_color = Color(0.831373, 0.909804, 1, 1)
-shader_parameter/foggyness = 0.948
-shader_parameter/fog_decay = 37.771
+shader_parameter/camera_pos = Vector3(-2, 2, -9)
+shader_parameter/camera_rotation = Basis(1, 0, 0.1, 0, 1, -0.1, -0.1, -0.1, 1)
+shader_parameter/x_pixels = 160
+shader_parameter/y_pixels = 160
+shader_parameter/max_reflection = 0.155
+shader_parameter/floor_color = Color(0, 0, 0, 1)
+shader_parameter/sky_color = Color(1, 1, 1, 1)
+shader_parameter/fog_color = Color(0.470588, 0.470588, 0.470588, 1)
+shader_parameter/foggyness = 0.823
+shader_parameter/fog_decay = 24.913
 
 [sub_resource type="Gradient" id="Gradient_5dcbp"]
 

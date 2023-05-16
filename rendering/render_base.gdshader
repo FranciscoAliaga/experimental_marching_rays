@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-#include "./new_shader.gdshaderinc"
+#include "./ray_marching.gdshaderinc"
 
 // x horizontal
 // y vertical
@@ -26,12 +26,11 @@ const float idh  = 1./dh;
 const float near = 0.01;
 const float far  = 100.;
 
-#define RAY_JUMPS 3
-#define JUMP_SEARCH 20
+#define RAY_BOUNCES 3
+#define JUMP_SEARCH 3
 #define JUMP_MULT 20.
 
-#define MAX_STEPS 20
-
+#define MAX_STEPS 50
 
 // takes an uv coordinate from the screen renderer and
 // returns the normalized ray.
@@ -48,38 +47,35 @@ vec3 ray(vec2 uv){
 	return normalize(rd);
 }
 
-float get_sdf2(vec3 pos, float t){
+/* Most important function */
+// returns the Signed Distance Function; 
+// each "object" is "declared" here. Reading SDFs is recommended prior to tweaking this.
+// gets called several times from the ray marching algorithm
+float get_sdf(vec3 pos, float t){
+	// put a sphere at the center
 	vec3 center = vec3(0.,-2.,5.);
+	float sdf = sphere_sdf(pos,center,1.);
 	
-	float RR = 0.8;
-	float ans = 100.;
-	
-	int N = 10;
-	float r = 3.;
+	// put several bodies on a ring
+	float r = 4.; // ring radius
+	float RR = 0.7; // body radius
+	int N = 10; // Number of figures
 	for(int i = 0; i <N ; i++ ){
-		float angle = 2.*PI*float(i)/float(N);
-		vec3 c_center = center + vec3(0.,0.,0.);
+		float angle = 2.*PI*float(i)/float(N); // spinning,
+		vec3 c_center = center + vec3(0.,0.,0.); // centered at
 		vec3 displacement = r*vec3(cos(angle+t),0.,sin(angle+t));
+		// even numbers yield spheres, odd, cubes
 		if (i%2==0){
-			ans = min(ans,sphere_sdf(pos,c_center+displacement,RR));
+			sdf = min(sdf,sphere_sdf(pos,c_center+displacement,RR));
 		}
 		else{
-			ans = min(ans,cube_sdf(pos,c_center+displacement,vec3(RR)));
+			sdf = min(sdf,cube_sdf(pos,c_center+displacement,vec3(RR)));
 		}
-		
 	}
-	
-	return ans;
+	return sdf;
 }
 
-float get_sdf(vec3 pos, float t){
-	float real = get_sdf2(pos,t);
-	float imag = get_sdf2(mod(abs(pos),vec3(5.,5.,5.)),t);
-	return min(real,imag);
-}
-
-
-
+// Gradient of the SDF. Used for calculating normals (therefore bounces)
 vec3 get_gradient(vec3 pos,float t){
 	float dx = get_sdf(pos+vec3(dh,0.,0.),t) - get_sdf(pos,t) ;
 	float dy = get_sdf(pos+vec3(0.,dh,0.),t) - get_sdf(pos,t) ;
@@ -87,28 +83,23 @@ vec3 get_gradient(vec3 pos,float t){
 	return vec3(dx,dy,dz)*idh;
 }
 
-
+// used to fetch colors.
+// faraway stuff (given by high depth) gets background colors
+// (sdf <= 1.5 near) represents solid objects
+// everything else is just black.
+// absolutely tweak this.
 vec4 get_color(vec3 pos,float depth, float t){
 	if (depth >= far){
 		if (pos.y > 0.) return sky_color;
 		else return floor_color;
 	}
 	if (get_sdf(pos,t)<=1.5*near){
-		return vec4(vec3(0.),1.);
+		return vec4(1.,0.,0.,1.);
 	}
-	return vec4(vec3(0.),1.);
+	return vec4(vec3(1.),0.);
 }
 
-struct ray_march_hit {
-	vec3 position;
-	vec4 color;
-	float depth;
-};
-
-struct color_and_depth {
-	vec4 color;
-	float depth;
-};
+/* A single Ray */
 
 ray_march_hit ray_march(vec3 pos, vec3 ray, float t, bool first_ray){
 	ray_march_hit result;
@@ -118,9 +109,10 @@ ray_march_hit ray_march(vec3 pos, vec3 ray, float t, bool first_ray){
 	int steps = 0;
 	float d;
 	
-	if(first_ray){
+	if(first_ray){ // ray coming from camera
 		d = get_sdf(pos,t);
-	} else { // find largest d such that gradient is increasing with ray.
+	} else { // ray bouncing out of a surface, the ray needs help getting out of the object:
+		 // find largest d such that gradient is increasing with ray.
 		d = near;
 		for(int j = 0; j<JUMP_SEARCH;j++){
 			vec3 gradient = get_gradient(pos+d*ray ,t);
@@ -133,6 +125,7 @@ ray_march_hit ray_march(vec3 pos, vec3 ray, float t, bool first_ray){
 		}
 	}
 	
+	// ray march
 	do {
 		result.depth += d;
 		pos = pos + ray * d;
@@ -146,18 +139,22 @@ ray_march_hit ray_march(vec3 pos, vec3 ray, float t, bool first_ray){
 	return result;
 }
 
+/*   Algorithm   */
+
+// Generates a ray, then bounces it RAY_BOUNCES times.
+// The color is calculated mixing each bound, and the depth is the depth of the first ray.
 color_and_depth ray_marching(vec3 pos, vec3 ray, float t){
 	color_and_depth result;
-	ray_march_hit[RAY_JUMPS] hits;
+	ray_march_hit[RAY_BOUNCES] hits;
 	
-	for(int i = 0; i < RAY_JUMPS; i++){
+	for(int i = 0; i < RAY_BOUNCES; i++){
 		hits[i] = ray_march(pos,ray,t,(i==0));
 		pos = hits[i].position;
 		if(length(pos) >= far) continue;
 		ray = reflect_vector_plane(ray,get_gradient(pos,t));
 	}
 	vec4 color = hits[0].color;
-	for(int i = 1; i < RAY_JUMPS; i++){
+	for(int i = 1; i < RAY_BOUNCES; i++){
 		color = (1.-max_reflection) * color + max_reflection * hits[i].color;
 	}
 	
@@ -166,23 +163,25 @@ color_and_depth ray_marching(vec3 pos, vec3 ray, float t){
 	return result;
 }
 
+// shader code. the outgoing camera rays are calculating using camera uniforms (position and rotation)
 void fragment() {
-	// first ray march
+	// camera position
 	vec3 ro = camera_pos;
-//	vec3 rd = ray(UV);
-	 vec3 rd = ray(pixel_uv(UV,ivec2(x_pixels,y_pixels)));
 	
+	// ray angle. 
+	//	vec3 rd = ray(UV); // non-pixelation
+	 vec3 rd = ray(pixel_uv(UV,ivec2(x_pixels,y_pixels))); // pixeled
+	
+	// runs algorithm, gets color and depth.
 	color_and_depth result = ray_marching(ro,rd,TIME);
 	
-	// color calculation
+	// color calculation;
 	vec4 color = result.color;
-	
-	float ff = foggyness * min(1.,result.depth/fog_decay);
-	color = (1.-ff) * color + ff * fog_color;
+	float ff = foggyness * min(1.,result.depth/fog_decay); // fog is applied depending on depth
+	color = (1.-ff) * color + ff * fog_color; 
 	
 	COLOR = color;
 	COLOR.a = 1.;
-	//COLOR.rgb = vec3(result.depth/100.);
 	
 }
 

@@ -5,6 +5,7 @@ extends Node
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	T.origin += 3.*Vector3.FORWARD + 1.*Vector3.UP
 
 var T : Transform3D = Transform3D()
 
