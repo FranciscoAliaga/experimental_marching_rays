@@ -59,6 +59,7 @@ vec3 ray(vec2 uv){
 }
 
 /* Most important function */
+
 // returns the Signed Distance Function; 
 // each "object" is "declared" here. Reading SDFs is recommended prior to tweaking this.
 // gets called several times from the ray marching algorithm
@@ -82,7 +83,11 @@ float get_sdf(vec3 pos, float t){
 		vec3 displacement_v = displacement_h.zxy;
 			sdf = min(sdf,sphere_sdf(pos,c_center-displacement_v,RR));
 	}
-	sdf = exp_smin(sdf,cube_sdf(pos,center,vec3(0.7)),1.);
+	sdf = exp_smin(sdf,cube_sdf(pos,center,vec3(0.7)),1.5);
+	
+	float s_r = .5*(0.8 + 0.1 * sin(10.*t));
+	vec3 s_disp = vec3(0.,10.*cos(t*0.25),0.);
+	sdf = exp_smin(sdf,sphere_sdf(pos,center+s_disp,s_r),2.);
 	
 	return sdf;
 }

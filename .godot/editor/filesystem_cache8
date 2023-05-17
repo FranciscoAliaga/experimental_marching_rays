@@ -1,10 +1,11 @@
 2a60927148abd1d33b818b535e306557
-::res://::1684339707
+::res://::1684341312
+export_presets.cfg::TextFile::-1::1684341243::0::1::::<><>::
 icon.svg::CompressedTexture2D::6379005840935511709::1682643134::1684339709::1::::<><>::
-main.tscn::PackedScene::3437229187151876150::1684271754::0::1::::<><>::uid://n10sa2ujh1tl<>res://Node.gd
+main.tscn::PackedScene::3437229187151876150::1684341099::0::1::::<><>::uid://n10sa2ujh1tl<>res://Node.gd
 Node.gd::GDScript::-1::1684264836::0::1::::<>Node<>::
 rendering_scene.gd::GDScript::-1::1684264815::0::1::::<>Node2D<>::
-rendering_scene.tscn::PackedScene::967678900640185473::1684272016::0::1::::<><>::res://rendering_scene.gd<>res://rendering/ray_marcher.gdshader
-::res://rendering/::1684272016
-ray_marcher.gdshader::Shader::-1::1684272016::0::1::::<><>::
-ray_marching.gdshaderinc::ShaderInclude::-1::1684272016::0::1::::<><>::
+rendering_scene.tscn::PackedScene::967678900640185473::1684341247::0::1::::<><>::res://rendering_scene.gd<>res://rendering/ray_marcher.gdshader
+::res://rendering/::1684341257
+ray_marcher.gdshader::Shader::-1::1684341257::0::1::::<><>::
+ray_marching.gdshaderinc::ShaderInclude::-1::1684341257::0::1::::<><>::
