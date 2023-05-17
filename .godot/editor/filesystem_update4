@@ -1,4 +1,4 @@
 res://rendering_scene.tscn
+res://main.tscn
 res://rendering/ray_marching.gdshaderinc
 res://rendering/ray_marcher.gdshader
-res://main.tscn

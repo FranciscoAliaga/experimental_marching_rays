@@ -8,15 +8,15 @@ resource_local_to_scene = true
 shader = ExtResource("2_fdpd3")
 shader_parameter/camera_pos = Vector3(-2, 2, -9)
 shader_parameter/camera_rotation = Basis(1, 0, 0.1, 0, 1, -0.1, -0.1, -0.1, 1)
-shader_parameter/x_pixels = 200
-shader_parameter/y_pixels = 200
-shader_parameter/reflection_index = 0.325
-shader_parameter/object_color = Color(0.494118, 0.494118, 0.494118, 1)
-shader_parameter/floor_color = Color(0.0784314, 1, 0.447059, 1)
-shader_parameter/sky_color = Color(0.501961, 0, 1, 1)
-shader_parameter/fog_color = Color(0.882353, 0.882353, 0.882353, 1)
-shader_parameter/foggyness = 0.591
-shader_parameter/fog_decay = 17.129
+shader_parameter/x_pixels = 240
+shader_parameter/y_pixels = 240
+shader_parameter/max_reflection = 0.155
+shader_parameter/object_color = Color(0.917647, 0.388235, 0, 1)
+shader_parameter/floor_color = Color(0, 0, 0, 1)
+shader_parameter/sky_color = Color(1, 1, 1, 1)
+shader_parameter/fog_color = Color(0.443137, 0.443137, 0.443137, 1)
+shader_parameter/foggyness = 0.635
+shader_parameter/fog_decay = 29.413
 
 [sub_resource type="Gradient" id="Gradient_5dcbp"]
 

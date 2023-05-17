@@ -1,6 +1,3 @@
-Node
+MarginContainer
+Label
 Control
-SubViewportContainer
-Camera2D
-SubViewport
-Sprite2D
