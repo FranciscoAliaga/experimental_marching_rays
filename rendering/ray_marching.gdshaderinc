@@ -21,6 +21,9 @@ float smin(float a,float b){
 	return exp_smin(a,b,2.);
 }
 
+float fog_ponderator_by_depth(float depth,float decay){
+	return min(1.,1.-decay/depth);
+}
 
 vec3 reflect_vector_plane(vec3 rd, vec3 normal){
 	vec3 n = normalize(normal);

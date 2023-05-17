@@ -23,7 +23,7 @@ stretch = true
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
 canvas_item_default_texture_filter = 0
-size = Vector2i(1000, 1000)
+size = Vector2i(1200, 1000)
 size_2d_override = Vector2i(1000, 1000)
 render_target_update_mode = 4
 
@@ -33,25 +33,203 @@ render_target_update_mode = 4
 script = ExtResource("2_vm2ag")
 speed = 5.0
 
-[node name="Control" type="MarginContainer" parent="."]
+[node name="UI" type="Control" parent="."]
+custom_minimum_size = Vector2(200, 1000)
 layout_mode = 1
-anchors_preset = 3
+anchors_preset = 6
 anchor_left = 1.0
-anchor_top = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -190.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -297.0
-offset_top = -112.0
-grow_horizontal = 0
-grow_vertical = 0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="Label" type="Label" parent="Control"]
+[node name="Control" type="Panel" parent="UI/MarginContainer"]
 layout_mode = 2
-text = "R: reset
-Mouse: cámara
-WASD: moverse
-ScrollWheel: distorsión espacio temporal
-"
-horizontal_alignment = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Settings"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="SkyColorLabel" type="Label" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Sky Color"
+
+[node name="SkyColorPicker" type="ColorPickerButton" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = "Sky Color"
+color = Color(1, 1, 1, 1)
+
+[node name="FloorColorLabel" type="Label" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Floor Color"
+
+[node name="FloorColorPicker" type="ColorPickerButton" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Floor Color"
+color = Color(0, 0, 1, 1)
+
+[node name="ObjectsColorLabel" type="Label" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Objects Color"
+
+[node name="ObjectsColorPicker" type="ColorPickerButton" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Objects Color"
+color = Color(1, 0, 0, 1)
+
+[node name="FogColorLabel" type="Label" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Fog Color"
+
+[node name="FogsColorPicker" type="ColorPickerButton" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Fog Color"
+color = Color(0.392157, 0.392157, 0.392157, 1)
+
+[node name="HSeparator2" type="HSeparator" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="SlidersTitle" type="Label" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Sliders"
+horizontal_alignment = 1
+
+[node name="PixelsLabel" type="Label" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Pixels (H,V)"
+
+[node name="PixelsX" type="HSlider" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 240.0
+scrollable = false
+
+[node name="PixelsY" type="HSlider" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 240.0
+scrollable = false
+
+[node name="FogLabel" type="Label" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Fog"
+
+[node name="FogSlider" type="HSlider" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.0
+value = 0.5
+scrollable = false
+
+[node name="FogDecayLabel" type="Label" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Fog Decay"
+
+[node name="FogDecaySlider" type="HSlider" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+step = 0.0
+value = 1.0
+scrollable = false
+
+[node name="ReflectionIndexLabel" type="Label" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = " Reflection Index"
+
+[node name="ReflectionSlider" type="HSlider" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.0
+value = 0.3
+scrollable = false
+
+[node name="HSeparator3" type="HSeparator" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpeedLabel" type="Label" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = "  Movement Speed"
+
+[node name="SpeedSlider" type="HSlider" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+max_value = 20.0
+step = 0.0
+value = 0.3
+scrollable = false
+
+[node name="HSeparator4" type="HSeparator" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="MouseLock" type="Label" parent="UI/MarginContainer/Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "  Aim: "
+
+[node name="MouseLock2" type="Label" parent="UI/MarginContainer/Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "  Locked "
+
+[node name="HSeparator5" type="HSeparator" parent="UI/MarginContainer/Control/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 43
+
+[node name="Panel" type="Panel" parent="UI/MarginContainer/Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MarginContainer/Control/VBoxContainer/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = " Controls:
+
+ WASD: Movement
+ Mouse Motion: Aim
+ Click: Lock/Unlock Aim
+
+ R: Reset
+ Scroll-Wheel: Distort
+ perspective
+ Esc: Quit"
+
+[connection signal="gui_input" from="SubViewportContainer" to="Node" method="_on_sub_viewport_container_gui_input"]
+[connection signal="color_changed" from="UI/MarginContainer/Control/VBoxContainer/SkyColorPicker" to="SubViewportContainer/SubViewport/RayMarcher" method="_on_sky_color_picker_color_changed"]
+[connection signal="color_changed" from="UI/MarginContainer/Control/VBoxContainer/FloorColorPicker" to="SubViewportContainer/SubViewport/RayMarcher" method="_on_floor_color_picker_color_changed"]
+[connection signal="color_changed" from="UI/MarginContainer/Control/VBoxContainer/ObjectsColorPicker" to="SubViewportContainer/SubViewport/RayMarcher" method="_on_objects_color_picker_color_changed"]
+[connection signal="color_changed" from="UI/MarginContainer/Control/VBoxContainer/FogsColorPicker" to="SubViewportContainer/SubViewport/RayMarcher" method="_on_fogs_color_picker_color_changed"]
+[connection signal="value_changed" from="UI/MarginContainer/Control/VBoxContainer/PixelsX" to="SubViewportContainer/SubViewport/RayMarcher" method="_on_pixels_x_value_changed"]
+[connection signal="value_changed" from="UI/MarginContainer/Control/VBoxContainer/PixelsY" to="SubViewportContainer/SubViewport/RayMarcher" method="_on_pixels_y_value_changed"]
+[connection signal="value_changed" from="UI/MarginContainer/Control/VBoxContainer/FogSlider" to="SubViewportContainer/SubViewport/RayMarcher" method="_on_fog_slider_value_changed"]
+[connection signal="value_changed" from="UI/MarginContainer/Control/VBoxContainer/FogDecaySlider" to="SubViewportContainer/SubViewport/RayMarcher" method="_on_fog_decay_slider_value_changed"]
+[connection signal="value_changed" from="UI/MarginContainer/Control/VBoxContainer/ReflectionSlider" to="SubViewportContainer/SubViewport/RayMarcher" method="_on_reflection_slider_value_changed"]
+[connection signal="value_changed" from="UI/MarginContainer/Control/VBoxContainer/SpeedSlider" to="Node" method="_on_speed_slider_value_changed"]

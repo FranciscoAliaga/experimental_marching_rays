@@ -1,2 +1,6 @@
 res://rendering_scene.tscn
 res://rendering_scene.gd
+res://rendering/ray_marcher.gdshader
+res://rendering/ray_marching.gdshaderinc
+res://main.tscn
+res://Node.gd

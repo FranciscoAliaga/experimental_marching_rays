@@ -15,7 +15,7 @@ uniform mat3 camera_rotation;
 uniform int x_pixels;
 uniform int y_pixels;
 
-uniform float max_reflection : hint_range(0.,1.);
+uniform float reflection_index : hint_range(0.,1.);
 
 uniform vec4 object_color : source_color;
 uniform vec4 floor_color : source_color;
@@ -178,10 +178,13 @@ color_and_depth ray_marching(vec3 pos, vec3 ray, float t){
 		// this code is only executed when the ray hits a surface
 		ray = reflect_vector_plane(ray,get_gradient(pos,t));
 	}
-	vec4 color = hits[0].color;
+	float ff = foggyness* fog_ponderator_by_depth(hits[0].depth,fog_decay); // fog is applied depending on depth
+	vec4 color = (1.-ff) * hits[0].color + ff*fog_color;
 	for(int i = 1; i < RAY_BOUNCES; i++){
 		// color mixing.
-		color = (1.-max_reflection) * color + max_reflection * hits[i].color;
+		ff = foggyness;// * fog_ponderator_by_depth(hits[i].depth,fog_decay);
+		vec4 reflection_color = (1.-ff) * hits[i].color + (ff) * fog_color;
+		color = (1.-reflection_index) * color + reflection_index * reflection_color;
 	}
 	
 	result.color = color;
@@ -201,10 +204,10 @@ void fragment() {
 	// runs algorithm, gets color and depth.
 	color_and_depth result = ray_marching(ro,rd,TIME);
 	
+	
 	// color calculation;
 	vec4 color = result.color;
-	float ff = foggyness * min(1.,result.depth/fog_decay); // fog is applied depending on depth
-	color = (1.-ff) * color + ff * fog_color; 
+
 	
 	COLOR = color;
 	COLOR.a = 1.;

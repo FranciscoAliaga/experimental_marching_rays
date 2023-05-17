@@ -1,3 +1,9 @@
-MarginContainer
 Label
+Panel
+HBoxContainer
+HSlider
+HSeparator
+ColorPickerButton
+VBoxContainer
+MarginContainer
 Control
